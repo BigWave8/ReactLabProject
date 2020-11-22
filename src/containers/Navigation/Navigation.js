@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { LinkingWrapper, NavigationDelimater, VerticalDelimater } from './Navigation.styles';
 import Home from '../Home/Home';
+import Catalog from "../Catalog/Catalog";
 
 const Navigation = () => (
     <Router>
@@ -30,7 +31,7 @@ const Navigation = () => (
             <VerticalDelimater/>
             <Switch>
                 <Route path="/catalog">
-                    <div>It's Catalog</div>
+                    <Catalog />
                 </Route>
                 <Route path="/cart">
                     <div>It's Cart</div>
