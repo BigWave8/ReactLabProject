@@ -1,80 +1,150 @@
-import React from 'react';
-import { data as receivedData} from "../Data";
+import React, { useState } from 'react';
+import { data as sourceData } from "../../containers/Home/Source";
 import { CardWrapper } from "../Home/Home.styles";
 import CardItem from "../../components/CardItem/CardItem";
-import { Menu } from 'antd';
+import { Menu, Input } from 'antd';
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+import { executeFilters } from "./Utils";
 import {
     CatalogSection,
     MenuView,
     SliderStyled,
+    SliderContainer
 } from "./Catalog.styles";
 
-const { SubMenu } = Menu;
-const { Search } = Input;
-const onSearch = value => console.log(value);
+let data = sourceData;
+
+const CatalogState = {
+    currentView: "card",
+    sortType: "default",
+    filterProducer: "default",
+    filterPrice: "default",
+    filterTargetAge: "default",
+};
 
 const Catalog = () => {
+    const [selectedKeys, setSelectedKeys] = useState(Object.values(CatalogState));
+    const [stationeries, setStationeries] = useState([...data]);
+
+    const search = (sample) => {
+        sample = sample.target.value.toLowerCase();
+        let resultList = [];
+        sourceData.forEach((item) => {
+            switch (true) {
+                case item.price.toString().includes(sample):
+                    resultList.push(item);
+                    break;
+                case item.producer.toLowerCase().includes(sample):
+                    resultList.push(item);
+                    break;
+                case item.targetAge.toString().includes(sample):
+                    resultList.push(item);
+                    break;
+                case item.barCode.toLowerCase().includes(sample):
+                    resultList.push(item);
+                    break;
+            }
+        });
+        data = resultList;
+        if (sample == "") {
+            data = sourceData;
+        }
+        setStationeries(executeFilters(CatalogState, data));
+    };
+
+    const handleClick = (e) => {
+        switch (e.item.props.subMenuKey) {
+            case "sort-menu-":
+                CatalogState.sortType = e.key;
+                break;
+            case "filter-menu-":
+                CatalogState.filterProducer = e.key;
+                break;
+        }
+        setSelectedKeys(Object.values(CatalogState));
+        setStationeries(executeFilters(CatalogState, data));
+    };
+
+    const resetDefault = (e) => {
+        let props = {};
+        props = {
+            key: "default",
+            item: { props: { subMenuKey: e.item.props.subMenuKey } },
+        }
+        handleClick(props);
+    };
+    
     return (
         <CatalogSection>
             <MenuView>
-            <Menu multiple mode="horizontal">
-            <SubMenu key="Sorting" icon={<SettingOutlined />} title="Sorting">
-                <Menu.ItemGroup title="Target Age">
-                    <Menu.Item key="sorting:1">Ascending Order</Menu.Item>
-                    <Menu.Item key="sorting:2">Descending Order</Menu.Item>
-                </Menu.ItemGroup>
-                <Menu.ItemGroup title="Price">
-                    <Menu.Item key="sorting:3">Ascending Order</Menu.Item>
-                    <Menu.Item key="sorting:4">Descending Order</Menu.Item>
-                </Menu.ItemGroup>
-            </SubMenu>
-            <SubMenu key="Filter" icon={<AppstoreOutlined />} title="Filter">
-                <Menu.Item key="filter_target_age:5">Target Age</Menu.Item>
-                <SubMenu key="filter_producer:2" title="Producer">
-                    <Menu.Item key="filter:1">Ukraine</Menu.Item>
-                    <Menu.Item key="filter:2">U.S.A.</Menu.Item>
-                    <Menu.Item key="filter:3">Poland</Menu.Item>
-                    <Menu.Item key="filter:4">Japan</Menu.Item>
-                    <Menu.Item key="filter:5">China</Menu.Item>
-                </SubMenu>
-                <Menu.Item key="filter_price:5">Price</Menu.Item>
-            </SubMenu>
-            </Menu>
-            <SliderStyled
-                range
-                step={.01}
-                max = {9999}
-                min = {.01}
-                marks = {marksPrice}
-                defaultValue={[1, 9999]}
-                onChange={onChange}
-                onAfterChange={onAfterChange}
-            />
-            <SliderStyled
-                range
-                max = {100}
-                min = {1}
-                marks = {marksAges}
-                defaultValue={[1, 100]}
-                onChange={onChange}
-                onAfterChange={onAfterChange}
-            />
-            <Search
-                placeholder="Input search text"
-                allowClear
-                onSearch={onSearch}
-                style={{ width: 240, margin: '0 10px' }}
-            />
+                <Menu
+                    multiple
+                    onSelect={handleClick}
+                    onDeselect={resetDefault}
+                    selectedKeys={selectedKeys}
+                    mode="horizontal"
+                >
+                    <SubMenu key="sort" icon={<SettingOutlined />} title="Sorting">
+                        <Menu.ItemGroup title="Price">
+                            <Menu.Item key="sortingPriceAsc">Ascending Order</Menu.Item>
+                            <Menu.Item key="sortingPriceDesc">Descending Order</Menu.Item>
+                        </Menu.ItemGroup>
+                        <Menu.ItemGroup title="Target Age">
+                            <Menu.Item key="sortingTargetAgeAsc">Ascending Order</Menu.Item>
+                            <Menu.Item key="sortingTargetAgeDesc">Descending Order</Menu.Item>
+                        </Menu.ItemGroup>
+                    </SubMenu>
+                    <SubMenu key="filter" icon={<AppstoreOutlined />} title="Filter">
+                        <Menu.ItemGroup title="Producer">
+                            <Menu.Item key="Ukraine">Ukraine</Menu.Item>
+                            <Menu.Item key="USA">USA</Menu.Item>
+                            <Menu.Item key="Poland">Poland</Menu.Item>
+                            <Menu.Item key="Spanish">Spanish</Menu.Item>
+                            <Menu.Item key="Japan">Japan</Menu.Item>
+                            <Menu.Item key="China">China</Menu.Item>
+                        </Menu.ItemGroup>
+                    </SubMenu>
+                </Menu>
+                <SliderContainer>
+                    <p>Price Filter</p>
+                    <SliderStyled
+                        range
+                        step={.01}
+                        max = {9999}
+                        min = {.01}
+                        marks = {marksPrice}
+                        defaultValue={[1, 9999]}
+                        //onAfterChange={}
+                    />
+                </SliderContainer>
+                <SliderContainer>
+                    <p>Target Age Filter</p>
+                    <SliderStyled
+                        range
+                        max = {100}
+                        min = {1}
+                        marks = {marksAges}
+                        defaultValue={[1, 100]}
+                        //onAfterChange={}
+                    />
+                </SliderContainer>
+                <Input 
+                    placeholder="Input search text"
+                    allowClear
+                    style={{ width: 240, margin: '0 10px' }}
+                    onChange={search}
+                />
             </MenuView>
             <CardWrapper>
-            {receivedData.map(({ title, text, image, price }, idx) => (
+            {stationeries.map(({ title, text, image, price, producer, targetAge, barCode }, idx) => (
                 <CardItem
                     title={title}
                     text={text}
                     imageSrc={image}
                     price={price}
+                    producer={producer}
+                    targetAge={targetAge}
+                    barCode={barCode}
                     id={idx}
                 />
             ))}
@@ -85,13 +155,7 @@ const Catalog = () => {
 
 export default Catalog;
 
-function onChange(value) {
-    console.log('onChange: ', value);
-}
-
-function onAfterChange(value) {
-    console.log('onAfterChange: ', value);
-}
+const { SubMenu } = Menu;
 
 const marksAges = {
     0: {

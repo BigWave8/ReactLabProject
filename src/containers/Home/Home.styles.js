@@ -50,6 +50,7 @@ export const CardWrapper = styled.div`
     justify-content: space-between;
     width: 80%;
     margin: 32px 10%;
+    flex-wrap: wrap;
 `
 
 export const ButtonStyled = styled(Button)`

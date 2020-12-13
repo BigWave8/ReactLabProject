@@ -6,7 +6,7 @@ const { Meta } = Card;
 
 export const CardStyled = styled(Card)`
     width: 364px;
-    height: 532px;
+    height: 600px;
     margin: 64px 0;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,7 @@ export const CardImage = styled.img`
 export const Footer = styled.div`
     border: 1px solid #dcd3cc;
     padding: 10px 0;
-    height: 200px;
+    height: 268px;
     width: 314px;
     display: flex;
     flex-direction: column;
@@ -32,7 +32,7 @@ export const MetaStyled  = styled(Meta)`
     font-size: 16px;
     text-align: center;
     .ant-card-meta-title{
-        font-size: 24px;
+        font-size: 20px;
     }
 `;
 
