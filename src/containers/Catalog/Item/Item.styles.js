@@ -42,14 +42,6 @@ export const RateStyled = styled(Rate)`
     margin-right: 50px;
 `;
 
-export const DescriptionStyled = styled.p`
-    font-family: "OpenSans Regular";
-    font-size: 20px;
-    color: #313943;
-    padding-top: 12px;
-    max-width: 400px;
-`;
-
 export const OptionTextStyled = styled.h3`
     display: inline-block;
     font-family: "OpenSans Regular";

@@ -8,7 +8,7 @@ import {
     TextStyled,
 } from "./CardItem.styles";
 
-const CardItem = ({ title, text, imageSrc, id, price, producer, targetAge, barCode }) => {
+const CardItem = ({ title, imageSrc, id, priceInHryvnia, producer, targetAge, barCode }) => {
     let history = useHistory();
     
     return (
@@ -19,8 +19,8 @@ const CardItem = ({ title, text, imageSrc, id, price, producer, targetAge, barCo
         >
             <CardStyled hoverable cover={<CardImage src={imageSrc} alt="Notebook" />}>
                 <Footer>
-                    <MetaStyled  title={title} description={text} />
-                    <TextStyled>Price: {price} UAH</TextStyled>
+                    <MetaStyled  title={title} />
+                    <TextStyled>Price: {priceInHryvnia} UAH</TextStyled>
                     <TextStyled>Producer: {producer}</TextStyled>
                     <TextStyled>Target age: {targetAge} years</TextStyled>
                     <TextStyled>Bar code: {barCode}</TextStyled>

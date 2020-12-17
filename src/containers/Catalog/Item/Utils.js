@@ -1,9 +1,9 @@
 export const findPriceTag = (item) => {
-    if (item.price < 100) {
+    if (item.priceInHryvnia < 100) {
         return "Price lower 100";
-    } else if (item.price < 500) {
+    } else if (item.priceInHryvnia < 500) {
         return "Price over 100";
-    }   else if (item.price < 2000) {
+    }   else if (item.priceInHryvnia < 2000) {
         return "Price over 500";
     } else {
         return "Price over 2000";
