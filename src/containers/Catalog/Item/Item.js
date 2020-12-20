@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import {
   ItemStyled,
   TopPart,
@@ -17,6 +18,7 @@ import { Image, Tag, InputNumber, Select } from "antd";
 import { IconBase } from "../../Footer/Footer.styles";
 import { ShoppingTwoTone } from "@ant-design/icons";
 import { fetchDataById } from "../../Utils/Api";
+import { addItem } from "../../Utils/Redux/Action";
 import {
   findPriceTag,
   findTargetAgeTag,
@@ -31,7 +33,7 @@ const Item = () => {
   const [addition, setAddition] = useState("default");
   const [redirect, setRedirect] = useState(false);
   const [penNumber, setPenNumber] = useState(0);
-
+  const dispatch = useDispatch();
   const location = useLocation();
   const totalPrice = useRef(null);
   const tags = useRef({
@@ -70,6 +72,18 @@ const Item = () => {
     totalPrice.current =
       item.priceInHryvnia +
       calculateAdditionPrice(localAddition, localPenNumber);
+  };
+
+  const addItemToCart = () => {
+    dispatch(
+      addItem({
+        id: item.id,
+        title: item.title,
+        priceInUAH: totalPrice.current,
+        imageSrc: item.image,
+        number: 1,
+      })
+    );
   };
 
   return (
@@ -113,7 +127,7 @@ const Item = () => {
           GO Back
         </ButtonItemStyled>
         {redirect && <Redirect push to="/catalog" />}
-        <ButtonItemStyledReverse>
+        <ButtonItemStyledReverse onClick={addItemToCart}>
           Add to Cart
           <IconBase component={ShoppingTwoTone} />
         </ButtonItemStyledReverse>
