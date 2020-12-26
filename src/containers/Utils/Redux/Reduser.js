@@ -57,6 +57,11 @@ const reducer = (state = {}, action) => {
         reservations: reservations,
         totalPrice: calculateTotalPrice(reservations),
       };
+    case "CLEAR_RESERVED_ITEMS":
+      return {
+        reservations: [],
+        totalPrice: 0,
+      };
     default:
       return state;
   }

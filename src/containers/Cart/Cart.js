@@ -14,8 +14,10 @@ const Cart = () => {
   let history = useHistory();
   const select = useSelector((state) => state);
 
-  const handleClick = () => {
-    console.log(select);
+  const checkout = () => {
+    if (select.reservations.length > 0) {
+      history.push(`/checkout`);
+    }
   };
 
   return (
@@ -27,7 +29,7 @@ const Cart = () => {
       <TotalPriceSyled>Total Price: {select.totalPrice} UAH</TotalPriceSyled>
       <Footer>
         <ButtonOnCart onClick={history.goBack}>Go Back</ButtonOnCart>
-        <ButtonOnCart onClick={handleClick}>Continue</ButtonOnCart>
+        <ButtonOnCart onClick={checkout}>Continue</ButtonOnCart>
       </Footer>
     </CartContainer>
   );

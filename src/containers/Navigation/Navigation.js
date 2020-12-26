@@ -14,6 +14,8 @@ import Item from "../Catalog/Item/Item";
 import Home from "../Home/Home";
 import Catalog from "../Catalog/Catalog";
 import Cart from "../Cart/Cart";
+import Checkout from "../Cart/Checkout/Checkout";
+import Success from "../Cart/Success/Success";
 
 const Navigation = () => {
   return (
@@ -51,6 +53,12 @@ const Navigation = () => {
           </Route>
           <Route path="/cart">
             <Cart />
+          </Route>
+          <Route path="/checkout">
+            <Checkout />
+          </Route>
+          <Route path="/success">
+            <Success />
           </Route>
           <Route path="/">
             <Home />

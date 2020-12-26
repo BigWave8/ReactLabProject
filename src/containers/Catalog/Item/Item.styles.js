@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Rate, Select, Statistic } from "antd";
+import { Select } from "antd";
 import { ButtonStyled } from "../../Home/Home.styles";
 
 export const ItemStyled = styled.div`
